@@ -1,21 +1,49 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
-generator client {
-  provider = "prisma-client-js"
-  output   = "../src/generated/prisma"
-}
-
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
-model Course {
-  id          String @id @default(cuid())
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id       Int    @id @default(autoincrement())
+  email    String @unique
+  password String
+  role     String // admin
+}
+
+model PageContent {
+  id        Int      @id @default(autoincrement())
+  page      String // about, design, photography, clients, pricing, contacts
+  lang      String // ru, en
+  title     String
+  text      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Photo {
+  id          Int      @id @default(autoincrement())
+  page        String // design, photography
+  url         String
+  author      String
+  description String?
+  createdAt   DateTime @default(now())
+}
+
+model Client {
+  id          Int      @id @default(autoincrement())
   name        String
-  description String
+  project     String
+  description String?
+  createdAt   DateTime @default(now())
+}
+
+model Catalog {
+  id        Int      @id @default(autoincrement())
+  name      String
+  fileUrl   String
+  createdAt DateTime @default(now())
 }
